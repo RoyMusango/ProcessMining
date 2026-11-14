@@ -18,7 +18,7 @@
   D('vacc-naif', { title: 'Centre de vaccination (premier plateau)',
     places: [P('attente', 40, 40, 3, 't'), P('dans_box', 200, 40, 0, 't'), P('vacciné', 360, 40, 0, 't'), P('sorti', 520, 40, 0, 't')], trans: line(40),
     arcs: [['attente', 'entrer'], ['entrer', 'dans_box'], ['dans_box', 'vacciner'], ['vacciner', 'vacciné'], ['vacciné', 'sortir'], ['sortir', 'sorti']] });
-  const vaccP = n => [P('attente', 40, 120, 3, 't'), P('box_libre', 280, 30, n, 't'), P('dans_box', 200, 120, 0, 't'), P('vacciné', 360, 120, 0, 't'), P('sorti', 520, 120, 0, 't')];
+  const vaccP = n => [P('attente', 40, 120, 3, 't'), P('box_libre', 280, 30, n, 't'), P('dans_box', 200, 120), P('vacciné', 360, 120), P('sorti', 520, 120, 0, 't')];
   const vaccA = back => [['attente', 'entrer'], ['box_libre', 'entrer'], ['entrer', 'dans_box'], ['dans_box', 'vacciner'], ['vacciner', 'vacciné'], ['vacciné', 'sortir'], ['sortir', 'sorti'], [back, 'box_libre']];
   D('vacc-corrige', { title: 'Centre de vaccination corrigé (box rendu par sortir)', places: vaccP(1), trans: line(120), arcs: vaccA('sortir') });
   D('vacc-corrige-bleu', { title: 'Centre de vaccination corrigé (box rendu par vacciner)', places: vaccP(1), trans: line(120), arcs: vaccA('vacciner') });

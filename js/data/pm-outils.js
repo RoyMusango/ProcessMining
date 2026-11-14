@@ -72,7 +72,8 @@
       const good = (isPre ? net.pre[t] : net.post[t]).map(a => a[0]), other = (isPre ? net.post[t] : net.pre[t]).map(a => a[0]);
       const F = net.arcs.map(([a, b]) => `(${a},${b})`).join(', ');
       const lures = [setTxt(other), setTxt(uniq([...good, ...other])), setTxt(net.P.filter(p => !good.includes(p))), setTxt(net.P), setTxt(good.slice(1))].filter(x => x !== setTxt(good));
-      return mcq(`$F=\\{$${F}$\\}$. <b>Que vaut $${isPre ? `\\bullet ${t.replace(/_/g, '\\_')}` : `${t.replace(/_/g, '\\_')}\\bullet`}$</b> (${isPre ? 'le preset' : 'le postset'} de <code>${t}</code>) ?`, setTxt(good), lures,
+      const tt = `\\text{${t.replace(/_/g, '\\_')}}`;
+      return mcq(`<b>${net.title}</b>${pm.fig(net.id)}$F=\\{$${F}$\\}$. <b>Que vaut $${isPre ? `\\bullet ${tt}` : `${tt}\\bullet`}$</b> (${isPre ? 'le preset' : 'le postset'} de <code>${t}</code>) ?`, setTxt(good), lures,
         `${isPre ? 'Preset' : 'Postset'} : les places $p$ telles que ${isPre ? `$(p,${t.replace(/_/g, '\\_')})\\in F$ (elles pointent vers la transition)` : `$(${t.replace(/_/g, '\\_')},p)\\in F$ (la transition pointe vers elles)`}. Ici ${setTxt(good)}.`);
     },
   };
