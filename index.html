@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Petri · Process mining</title>
+  <link rel="icon" href="icons/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="icons/favicon-32.png" sizes="32x32" type="image/png">
+  <link rel="apple-touch-icon" href="icons/icon-180.png">
+  <link rel="manifest" href="manifest.webmanifest">
+  <meta name="theme-color" content="#f7f6f2">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-title" content="Petri">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <link rel="preload" href="fonts/jost-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <script>
+    // Thème mémorisé, puis niveau de rendu : « fx » (ordinateur : animations et effets) ou version légère (téléphone, tablette, animations réduites)
+    (function () {
+      var d = document.documentElement;
+      try { var t = localStorage.getItem('applangues-theme'); if (t) d.dataset.theme = t; } catch (e) { }
+      var q = matchMedia('(max-width: 860px), (pointer: coarse), (prefers-reduced-motion: reduce)');
+      var set = function () { d.classList.toggle('fx', !q.matches); };
+      set(); if (q.addEventListener) q.addEventListener('change', set);
+    })();
+  </script>
+  <link rel="stylesheet" href="js/vendor/katex/katex.min.css">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/theme.css">
+  <link rel="stylesheet" href="css/vivid.css">
+  <link rel="stylesheet" href="css/nova.css">
+  <link rel="stylesheet" href="css/pm.css">
+</head>
+<body>
+  <!-- Fond : plusieurs figures par page (réseau de Petri, chaîne de Markov, graphe d’accessibilité, carte de processus…),
+       choisies selon la rubrique (css/pm.css) ; images fabriquées par verif/fonds_pm.mjs -->
+  <div class="mathbg" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+  <header class="topbar">
+    <div class="topbar-in">
+      <a class="brand" href="#today"></a>
+      <nav id="nav" aria-label="Rubriques"></nav>
+      <div class="top-right">
+        <div class="today-chip" id="todayChip" title="Temps de travail aujourd’hui"></div>
+        <div class="top-tools">
+          <button class="icon-btn" id="themeBtn" type="button"></button>
+          <a class="icon-btn" title="Réglages" aria-label="Réglages" id="gearLink"></a>
+        </div>
+      </div>
+    </div>
+  </header>
+  <main id="view"></main>
+  <div class="sheet hidden" id="moreSheet"><div class="sheet-box" id="moreBox"></div></div>
+
+  <button class="fab" id="fabAsk" title="Poser une question au tuteur" aria-label="Poser une question au tuteur"></button>
+  <div class="modal hidden" id="modal"><div class="modal-box" id="modalBox"></div></div>
+
+  <!-- Formules -->
+  <script src="js/vendor/katex/katex.min.js"></script>
+  <script src="js/vendor/katex/auto-render.min.js"></script>
+  <!-- Propre au cours -->
+  <script src="js/lang.js"></script>
+  <script src="js/data/course.js"></script>
+  <!-- Simulateur de réseaux de Petri et réseaux du cours -->
+  <script src="js/petri.js"></script>
+  <script src="js/nets.js"></script>
+  <script src="js/data/pm-outils.js"></script>
+  <script src="js/data/pm1.js"></script>
+  <script src="js/data/pm2.js"></script>
+  <script src="js/data/pm3.js"></script>
+  <script src="js/data/pm4.js"></script>
+  <script src="js/data/pm-routage.js"></script>
+  <script src="js/data/pm-exos.js"></script>
+  <!-- Glossaire des notations (après tous les chapitres) -->
+  <script src="js/data/glossary.js"></script>
+  <!-- Moteur commun (AppLangues) -->
+  <script src="js/store.js"></script>
+  <script src="js/sync.js"></script>
+  <script src="js/speech.js"></script>
+  <script src="js/ai.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
