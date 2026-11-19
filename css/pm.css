@@ -158,3 +158,29 @@ svg.pn { min-width: min(100%, 300px); }
 
 /* Longues formules (ensemble F) : défilent dans leur bloc au lieu d’élargir la page */
 .fiche p, .fiche .enonce, .fiche .def, .fiche .thm, .fiche li { max-width: 100%; overflow-x: auto; overflow-y: hidden; }
+
+/* Réseaux colorés et temporisés (problèmes 5 et 6, séance 3) */
+.cpn { background: var(--card); border: 1px solid var(--line); border-radius: var(--r); padding: 14px 16px; box-shadow: var(--sh-1); }
+.cp-ins { fill: var(--pn-ink); font-size: 11px; font-family: ui-monospace, Consolas, monospace; paint-order: stroke; stroke: var(--card); stroke-width: 3.5px; }
+.cp-guard { fill: var(--a2); font-size: 11px; font-weight: 600; font-family: ui-monospace, Consolas, monospace; paint-order: stroke; stroke: var(--card); stroke-width: 3.5px; }
+.cp-type { display: block; font-size: .7rem; font-weight: 500; color: var(--muted); font-family: ui-monospace, Consolas, monospace; }
+.cp-mk .pn-tbl td.v { white-space: normal; overflow-wrap: anywhere; }
+.pn-still .cp-mk { margin-top: 6px; text-align: left; }
+.cp-clock { font-size: .95rem; }
+.cp-binds { margin-top: 10px; display: flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+.cp-bh { flex-basis: 100%; font-size: .84rem; color: var(--muted); }
+.cp-b { font-family: ui-monospace, Consolas, monospace; font-size: .8rem; text-align: left; }
+.cp-log { margin: 6px 0 0; padding-left: 22px; max-height: 220px; overflow-y: auto; font-size: .82rem; }
+.cp-log li { margin: 2px 0; }
+.cp-clk { display: inline-block; min-width: 4.5em; color: var(--a1); font-weight: 600; font-family: ui-monospace, Consolas, monospace; }
+.cp-opts { display: flex; flex-direction: column; align-items: flex-start; gap: 6px; }
+.cp-opts .btn { text-align: left; white-space: normal; }
+.cp-plot { margin: 12px 0 0; }
+.cp-plot svg { width: 100%; height: auto; max-width: 720px; display: block; margin: 0 auto; }
+.cp-plot figcaption { font-size: .8rem; color: var(--muted); text-align: center; margin-top: 4px; }
+.cp-line { fill: none; stroke: var(--a1); stroke-width: 2; }
+.cp-grid { stroke: var(--line); stroke-width: 1; }
+.cp-ref { stroke: var(--a2); stroke-width: 1; stroke-dasharray: 4 3; }
+.cp-ax { fill: var(--muted); font-size: 10px; text-anchor: middle; }
+.cp-ax.ref { fill: var(--a2); }
+.cp-decl { margin: 10px 0; padding: 10px 12px; border-radius: 10px; background: var(--surface); overflow-x: auto; font-size: .82rem; line-height: 1.5; }

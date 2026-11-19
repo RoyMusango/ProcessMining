@@ -1,7 +1,7 @@
 // Service worker : l'app reste utilisable sans réseau (fiches, cartes, exercices ; le tuteur IA demande Internet).
 // Stratégie : on sert la copie en cache tout de suite et on la met à jour en arrière-plan.
 // Le nom du cache inclut le chemin de l'app pour ne pas se mélanger avec les apps de langues (même adresse).
-const VERSION = 'v20261114-2';
+const VERSION = 'v20261119-1';
 const CACHE = 'applangues' + self.location.pathname.replace(/sw\.js$/, '') + VERSION;
 const SHELL = [
   './', './index.html', './css/style.css', './css/theme.css', './css/vivid.css', './css/nova.css', './css/pm.css', './manifest.webmanifest',
@@ -9,8 +9,8 @@ const SHELL = [
   './img/petri.svg', './img/markov.svg', './img/accessibilite.svg', './img/carte.svg', './img/journal.svg', './img/jetons.svg', './img/matrice.svg', './img/routage.svg',
   './icons/favicon.svg', './icons/favicon-32.png', './icons/icon-192.png',
   './js/vendor/katex/katex.min.css', './js/vendor/katex/katex.min.js', './js/vendor/katex/auto-render.min.js',
-  './js/lang.js', './js/data/course.js', './js/petri.js', './js/nets.js', './js/data/pm-outils.js', './js/data/pm1.js', './js/data/pm2.js', './js/data/pm3.js', './js/data/pm4.js',
-  './js/data/pm-routage.js', './js/data/pm-exos.js', './js/data/glossary.js',
+  './js/lang.js', './js/data/course.js', './js/petri.js', './js/nets.js', './js/cpn.js', './js/cpn-nets.js', './js/data/pm-outils.js', './js/data/pm1.js', './js/data/pm2.js', './js/data/pm3.js', './js/data/pm4.js',
+  './js/data/pm5.js', './js/data/pm6.js', './js/data/pm-routage.js', './js/data/pm-exos.js', './js/data/pm-exos3.js', './js/data/glossary.js',
   './js/store.js', './js/sync.js', './js/speech.js', './js/ai.js', './js/app.js',
 ];
 const PREFIX = 'applangues' + self.location.pathname.replace(/sw\.js$/, '');

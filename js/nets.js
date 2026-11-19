@@ -156,11 +156,12 @@
     places: [P('p1', 40, 130, 1), P('p2', 130, 40, 0, 't'), P('p3', 310, 40, 1, 't'), P('p4', 220, 130, 2)].filter(p => p.id !== drop), trans: [T('t1', 130, 130), T('t2', 220, 40, 't'), T('t3', 310, 130)],
     arcs: [['p1', 't1'], ['p4', 't1'], ['t1', 'p2'], ['p2', 't2'], ['t2', 'p3'], ['t2', 'p4'], ['p3', 't3'], ['p4', 't3'], ['t3', 'p4']].filter(a => a[0] !== drop && a[1] !== drop) });
   ex12(null, 'Exercice 1.2 (figure 1)'); ex12('p1', 'Exercice 1.2 sans la place p1'); ex12('p3', 'Exercice 1.2 sans la place p3');
+  // Solutions finales de la séance 1 : mêmes noms que le corrigé (m = meuler, f = fraiser)
   D('ex13', { title: 'Exercice 1.3 : la chaîne de production',
-    places: [P('en_attente', 40, 110, 2), P('chaîne_libre', 280, 20, 1, 't'), P('meulé', 200, 110), P('fraisé', 360, 110), P('à_livrer', 520, 60, 0, 't'), P('jeté', 520, 170), P('livré', 680, 60, 0, 't')],
-    trans: [T('meuler', 120, 110), T('fraiser', 280, 110), T('test_positif', 440, 60, 't'), T('test_négatif', 440, 170), T('livrer', 600, 60)],
-    arcs: [['en_attente', 'meuler'], ['chaîne_libre', 'meuler'], ['meuler', 'meulé'], ['meulé', 'fraiser'], ['fraiser', 'fraisé'], ['fraisé', 'test_positif'], ['fraisé', 'test_négatif'], ['test_positif', 'à_livrer'], ['test_négatif', 'jeté'],
-      ['à_livrer', 'livrer'], ['livrer', 'livré'], ['livrer', 'chaîne_libre', 1, 30], ['test_négatif', 'chaîne_libre', 1, -40]] });
+    places: [P('en_attente', 40, 110, 2), P('ligne_libre', 280, 20, 1, 't'), P('meulé', 200, 110), P('fraisé', 360, 110), P('à_livrer', 520, 60, 0, 't'), P('jeté', 520, 170), P('livré', 680, 60, 0, 't')],
+    trans: [T('m', 120, 110), T('f', 280, 110), T('test_positif', 440, 60, 't'), T('test_négatif', 440, 170), T('livrer', 600, 60)],
+    arcs: [['en_attente', 'm'], ['ligne_libre', 'm'], ['m', 'meulé'], ['meulé', 'f'], ['f', 'fraisé'], ['fraisé', 'test_positif'], ['fraisé', 'test_négatif'], ['test_positif', 'à_livrer'], ['test_négatif', 'jeté'],
+      ['à_livrer', 'livrer'], ['livrer', 'livré'], ['livrer', 'ligne_libre', 1, 30], ['test_négatif', 'ligne_libre', 1, -40]] });
   D('ex14', { title: 'Exercice 1.4 : le cabinet dentaire',
     places: [P('p_maison', 40, 30, 3), P('p_attente', 220, 30), P('en_consultation', 400, 30), P('p_fini', 580, 30), P('p_parti', 760, 30), P('d_libre', 490, -70, 1, 't'), P('d_occupé', 400, 125, 0, 'l'), P('d_docu', 580, 125, 0, 'r'),
       P('inf_libre', 400, 290, 1), P('inf_occupée', 400, 205, 0, 'l'), P('s_réception', 310, -70, 1, 't'), P('s_docu', 580, 205, 0, 'r')],
@@ -168,46 +169,54 @@
     arcs: [['p_maison', 'entrer'], ['entrer', 'p_attente'], ['s_réception', 'entrer'], ['entrer', 's_réception'], ['p_attente', 'commencer'], ['d_libre', 'commencer'], ['inf_libre', 'commencer'], ['commencer', 'en_consultation'], ['commencer', 'd_occupé'], ['commencer', 'inf_occupée'],
       ['en_consultation', 'documenter'], ['d_occupé', 'documenter'], ['inf_occupée', 'documenter'], ['s_réception', 'documenter'], ['documenter', 'p_fini'], ['documenter', 'd_docu'], ['documenter', 'inf_libre'], ['documenter', 's_docu'],
       ['p_fini', 'terminer'], ['d_docu', 'terminer'], ['s_docu', 'terminer'], ['terminer', 'p_parti'], ['terminer', 'd_libre'], ['terminer', 's_réception']] });
-  const frogs = [P('pont', 40, 120, 3, 'l'), P('ruisseau', 240, 120, 0, 'r'), P('bord_g', 440, 50, 0, 't'), P('bord_d', 440, 190)];
+  const frogs = [P('pont', 40, 120, 3, 'l'), P('ruisseau', 240, 120, 0, 'r'), P('bord_gauche', 440, 50, 0, 't'), P('bord_droit', 440, 190)];
   const frogT = [T('nager_gauche', 340, 50, 't'), T('nager_droite', 340, 190), T('remonter_g', 540, 50, 'r'), T('remonter_d', 540, 190, 'r')];
-  const frogA = [['ruisseau', 'nager_gauche'], ['ruisseau', 'nager_droite'], ['nager_gauche', 'bord_g'], ['nager_droite', 'bord_d'], ['bord_g', 'remonter_g'], ['bord_d', 'remonter_d'], ['remonter_g', 'pont', 1, 50], ['remonter_d', 'pont', 1, -62]];
-  D('ex15', { title: 'Exercice 1.5 : grenouilles et princesse (compteur pondéré)', places: [...frogs, P('sauts', 140, 30, 0, 't')], trans: [...frogT, T('sauter', 140, 120), T('embrasser', 240, 30, 't')],
+  const frogA = [['ruisseau', 'nager_gauche'], ['ruisseau', 'nager_droite'], ['nager_gauche', 'bord_gauche'], ['nager_droite', 'bord_droit'], ['bord_gauche', 'remonter_g'], ['bord_droit', 'remonter_d'], ['remonter_g', 'pont', 1, 50], ['remonter_d', 'pont', 1, -62]];
+  D('ex15', { title: 'Exercice 1.5 : variante avec un compteur pondéré', places: [...frogs, P('sauts', 140, 30, 0, 't')], trans: [...frogT, T('sauter', 140, 120), T('embrasser', 240, 30, 't')],
     arcs: [...frogA, ['pont', 'sauter'], ['sauter', 'ruisseau'], ['sauter', 'sauts'], ['sauts', 'embrasser', 3], ['ruisseau', 'embrasser'], ['embrasser', 'pont', 1, 40]] });
-  D('ex15-strict', { title: 'Exercice 1.5 : exactement une grenouille sur trois',
-    places: [P('pont', 40, 150, 3, 'l'), P('ruisseau', 300, 150, 0, 'r'), P('bord_g', 480, 90, 0, 't'), P('bord_d', 480, 210), P('c0', 100, 20, 1, 't'), P('c1', 240, 20, 0, 't'), P('c2', 170, -60, 0, 't'), P('pour_princesse', 300, 290, 0, 'r')],
-    trans: [T('nager_gauche', 390, 90, 't'), T('nager_droite', 390, 210), T('remonter_g', 570, 90, 'r'), T('remonter_d', 570, 210, 'r'), T('saut_1', 170, 90, 'r'), T('saut_2', 300, 60, 'r'), T('saut_3', 100, 230, 'l'), T('embrasser', 170, 290)],
-    arcs: [['ruisseau', 'nager_gauche'], ['ruisseau', 'nager_droite'], ['nager_gauche', 'bord_g'], ['nager_droite', 'bord_d'], ['bord_g', 'remonter_g'], ['bord_d', 'remonter_d'], ['remonter_g', 'pont', 1, 95], ['remonter_d', 'pont', 1, -85],
-      ['pont', 'saut_1'], ['c0', 'saut_1'], ['saut_1', 'ruisseau'], ['saut_1', 'c1'], ['pont', 'saut_2', 1, -18], ['c1', 'saut_2'], ['saut_2', 'ruisseau'], ['saut_2', 'c2', 1, -30],
-      ['pont', 'saut_3'], ['c2', 'saut_3', 1, 62], ['saut_3', 'pour_princesse'], ['saut_3', 'c0', 1, -8], ['pour_princesse', 'embrasser'], ['embrasser', 'pont']] });
+  // Le corrigé : un compteur cyclique c0 → c1 → c2 → c0 ; le troisième saut mène à la princesse
+  D('ex15-strict', { title: 'Exercice 1.5 : grenouilles et princesse (corrigé)',
+    places: [P('pont', 40, 150, 3, 'l'), P('ruisseau', 300, 150, 0, 'r'), P('bord_gauche', 480, 90, 0, 't'), P('bord_droit', 480, 210), P('c0', 100, 20, 1, 't'), P('c1', 240, 20, 0, 't'), P('c2', 170, -60, 0, 't'), P('attrapée', 300, 290, 0, 'r')],
+    trans: [T('nager_gauche', 390, 90, 't'), T('nager_droite', 390, 210), T('remonter_g', 570, 90, 'r'), T('remonter_d', 570, 210, 'r'), T('sauter_1', 170, 90, 'r'), T('sauter_2', 300, 60, 'r'), T('sauter_3', 100, 230, 'l'), T('embrasser', 170, 290)],
+    arcs: [['ruisseau', 'nager_gauche'], ['ruisseau', 'nager_droite'], ['nager_gauche', 'bord_gauche'], ['nager_droite', 'bord_droit'], ['bord_gauche', 'remonter_g'], ['bord_droit', 'remonter_d'], ['remonter_g', 'pont', 1, 95], ['remonter_d', 'pont', 1, -85],
+      ['pont', 'sauter_1'], ['c0', 'sauter_1'], ['sauter_1', 'ruisseau'], ['sauter_1', 'c1'], ['pont', 'sauter_2', 1, -18], ['c1', 'sauter_2'], ['sauter_2', 'ruisseau'], ['sauter_2', 'c2', 1, -30],
+      ['pont', 'sauter_3'], ['c2', 'sauter_3', 1, 62], ['sauter_3', 'attrapée'], ['sauter_3', 'c0', 1, -8], ['attrapée', 'embrasser'], ['embrasser', 'pont']] });
   // 1.6 : les ferrys. Aux arrêts B et C, il faut retenir le sens (aller ou retour) : le demi-tour n'existe qu'en A et en D.
+  // Noms et disposition du corrigé : q = quitter l'arrêt, a = arriver à l'arrêt, le prime désigne le sens retour.
   (() => {
-    const pl = [P('port_X', 0, 0, 5)], tr = [], arcs = [];
-    ['A', 'B', 'C', 'D'].forEach(s => pl.push({ id: s + '_libre', tokens: 1 }));
-    ['A', 'B_aller', 'C_aller', 'D', 'C_retour', 'B_retour', 'AB', 'BC', 'CD', 'DC', 'CB', 'BA'].forEach(id => pl.push({ id, tokens: 0 }));
-    const t = (id, ins, outs) => { tr.push({ id }); ins.forEach(p => arcs.push([p, id])); outs.forEach(p => arcs.push([id, p])); };
-    t('mise_en_service', ['port_X', 'A_libre'], ['A']); t('retrait', ['A'], ['port_X', 'A_libre']);
-    t('quitter_A', ['A'], ['AB', 'A_libre']); t('arriver_B_aller', ['AB', 'B_libre'], ['B_aller']); t('quitter_B_aller', ['B_aller'], ['BC', 'B_libre']);
-    t('arriver_C_aller', ['BC', 'C_libre'], ['C_aller']); t('quitter_C_aller', ['C_aller'], ['CD', 'C_libre']); t('arriver_D', ['CD', 'D_libre'], ['D']);
-    t('quitter_D', ['D'], ['DC', 'D_libre']); t('arriver_C_retour', ['DC', 'C_libre'], ['C_retour']); t('quitter_C_retour', ['C_retour'], ['CB', 'C_libre']);
-    t('arriver_B_retour', ['CB', 'B_libre'], ['B_retour']); t('quitter_B_retour', ['B_retour'], ['BA', 'B_libre']); t('arriver_A', ['BA', 'A_libre'], ['A']);
-    pl.forEach(p => { delete p.x; delete p.y; });
+    const top = 40, mid = 120, bot = 200, x = i => 290 + 72 * i;
+    const pl = [P('X', 50, mid, 5, 'l'), P('libre_A', 150, mid, 1, 'b'), P('A', 222, mid, 0, 'b'),
+      P('AB', x(1), top, 0, 't'), P('B_aller', x(3), top, 0, 't'), P('BC', x(5), top, 0, 't'), P('C_aller', x(7), top, 0, 't'), P('CD', x(9), top, 0, 't'), P('D', x(11), mid, 0, 'r'),
+      P('DC', x(9), bot), P('C_retour', x(7), bot), P('CB', x(5), bot), P('B_retour', x(3), bot), P('BA', x(1), bot),
+      P('libre_B', x(3), mid, 1, 'r'), P('libre_C', x(7), mid, 1, 'r'), P('libre_D', x(10), mid, 1, 'l')];
+    const tr = [T('service', 150, top, 't'), T('retrait', 150, bot), T('q_A', x(0), top, 't'), T('a_B', x(2), top, 't'), T('q_B', x(4), top, 't'), T('a_C', x(6), top, 't'), T('q_C', x(8), top, 't'), T('a_D', x(10), top, 't'),
+      T('q_D', x(10), bot), T("a_C'", x(8), bot), T("q_C'", x(6), bot), T("a_B'", x(4), bot), T("q_B'", x(2), bot), T('a_A', x(0), bot)];
+    const arcs = [];
+    const t = (id, ins, outs) => { ins.forEach(p => arcs.push([p, id])); outs.forEach(p => arcs.push([id, p])); };
+    t('service', ['X', 'libre_A'], ['A']); t('retrait', ['A'], ['X', 'libre_A']);
+    t('q_A', ['A'], ['AB', 'libre_A']); t('a_B', ['AB', 'libre_B'], ['B_aller']); t('q_B', ['B_aller'], ['BC', 'libre_B']);
+    t('a_C', ['BC', 'libre_C'], ['C_aller']); t('q_C', ['C_aller'], ['CD', 'libre_C']); t('a_D', ['CD', 'libre_D'], ['D']);
+    t('q_D', ['D'], ['DC', 'libre_D']); t("a_C'", ['DC', 'libre_C'], ['C_retour']); t("q_C'", ['C_retour'], ['CB', 'libre_C']);
+    t("a_B'", ['CB', 'libre_B'], ['B_retour']); t("q_B'", ['B_retour'], ['BA', 'libre_B']); t('a_A', ['BA', 'libre_A'], ['A']);
     D('ex16', { title: 'Exercice 1.6 : les ferrys CityCat', places: pl, trans: tr, arcs });
   })();
 
   // ---------------------------------------------------------------- Exercices, séance 2
+  // Solutions finales de la séance 2 : mêmes noms que le corrigé
   D('ex21', { title: 'Exercice 2.1 : la production d’un vélo',
-    places: [P('cadre', 40, 40, 4, 't'), P('pédales', 40, 130, 4), P('en_étape_1', 220, 85), P('semi_fini_1', 400, 85), P('roues', 400, 200, 4), P('en_étape_2', 580, 85), P('semi_fini_2', 760, 85), P('freins', 760, 200, 4),
-      P('en_étape_3', 940, 85), P('vélo', 1120, 85), P('B_libre', 580, -40, 7, 't'), P('A_libre', 580, 200, 3)],
-    trans: [T('début_1', 130, 85), T('fin_1', 310, 85), T('début_2', 490, 85), T('fin_2', 670, 85), T('début_3', 850, 85), T('fin_3', 1030, 85)],
-    arcs: [['cadre', 'début_1'], ['pédales', 'début_1', 2], ['B_libre', 'début_1'], ['début_1', 'en_étape_1'], ['en_étape_1', 'fin_1'], ['fin_1', 'semi_fini_1'], ['fin_1', 'B_libre'],
-      ['semi_fini_1', 'début_2'], ['roues', 'début_2', 2], ['A_libre', 'début_2'], ['début_2', 'en_étape_2'], ['en_étape_2', 'fin_2'], ['fin_2', 'semi_fini_2'], ['fin_2', 'A_libre'],
-      ['semi_fini_2', 'début_3'], ['freins', 'début_3', 2], ['B_libre', 'début_3'], ['début_3', 'en_étape_3'], ['en_étape_3', 'fin_3'], ['fin_3', 'vélo'], ['fin_3', 'B_libre']] });
-  D('ex22', { title: 'Exercice 2.2 : l’institut de langues (un seul cours dessiné)',
-    places: [P('dehors', 40, 40, 3, 't'), P('inscrit', 220, 40, 0, 't'), P('a_choisi', 440, 40, 0, 't'), P('places_libres', 440, 130, 20, 'r'), P('ouvert', 330, 230, 1, 'l'), P('en_cours', 550, 230), P('terminé', 770, 230)],
-    trans: [T('s_inscrire', 130, 40, 't'), T('se_désinscrire', 130, 120), T('choisir', 330, 40, 't'), T('quitter_le_cours', 550, 40, 'r'), T('démarrer', 440, 230), T('terminer', 660, 230), T('rouvrir', 550, 320)],
-    arcs: [['dehors', 's_inscrire'], ['s_inscrire', 'inscrit'], ['inscrit', 'se_désinscrire'], ['se_désinscrire', 'dehors'], ['inscrit', 'choisir'], ['places_libres', 'choisir'], ['ouvert', 'choisir'], ['choisir', 'ouvert'], ['choisir', 'a_choisi'],
-      ['a_choisi', 'quitter_le_cours'], ['terminé', 'quitter_le_cours'], ['quitter_le_cours', 'terminé'], ['quitter_le_cours', 'places_libres'], ['quitter_le_cours', 'inscrit', 1, 38],
-      ['ouvert', 'démarrer'], ['démarrer', 'en_cours'], ['en_cours', 'terminer'], ['terminer', 'terminé'], ['terminé', 'rouvrir'], ['rouvrir', 'ouvert'], ['places_libres', 'rouvrir', 20], ['rouvrir', 'places_libres', 20]] });
+    places: [P('cadres', 40, 40, 4, 't'), P('pédales', 40, 130, 4), P('en_B1', 220, 85), P('semi_1', 400, 85), P('roues', 400, 200, 4), P('en_A', 580, 85), P('semi_2', 760, 85), P('freins', 760, 200, 4),
+      P('en_B2', 940, 85), P('vélo', 1120, 85), P('machines_B', 580, -40, 7, 't'), P('machines_A', 580, 200, 3)],
+    trans: [T('début_B1', 130, 85), T('fin_B1', 310, 85), T('début_A', 490, 85), T('fin_A', 670, 85), T('début_B2', 850, 85), T('fin_B2', 1030, 85)],
+    arcs: [['cadres', 'début_B1'], ['pédales', 'début_B1', 2], ['machines_B', 'début_B1'], ['début_B1', 'en_B1'], ['en_B1', 'fin_B1'], ['fin_B1', 'semi_1'], ['fin_B1', 'machines_B'],
+      ['semi_1', 'début_A'], ['roues', 'début_A', 2], ['machines_A', 'début_A'], ['début_A', 'en_A'], ['en_A', 'fin_A'], ['fin_A', 'semi_2'], ['fin_A', 'machines_A'],
+      ['semi_2', 'début_B2'], ['freins', 'début_B2', 2], ['machines_B', 'début_B2'], ['début_B2', 'en_B2'], ['en_B2', 'fin_B2'], ['fin_B2', 'vélo'], ['fin_B2', 'machines_B']] });
+  // Un cours X (ici l'Anglais, cX = 20) ; le corrigé répète la partie « cours » pour les trois langues
+  D('ex22', { title: 'Exercice 2.2 : l’institut de langues (un cours X dessiné, cX = 20)',
+    places: [P('dehors', 40, 40, 3, 't'), P('inscrit', 220, 40, 0, 't'), P('suit_X', 440, 40, 0, 't'), P('places_X', 440, 130, 20, 'r'), P('ouvert_X', 330, 230, 1, 'l'), P('en_cours_X', 550, 230), P('terminé_X', 770, 230)],
+    trans: [T('s_inscrire', 130, 40, 't'), T('se_désinscrire', 130, 120), T('choisir_X', 330, 40, 't'), T('quitter_X', 550, 40, 'r'), T('démarrer_X', 440, 230), T('finir_X', 660, 230), T('rouvrir_X', 550, 320)],
+    arcs: [['dehors', 's_inscrire'], ['s_inscrire', 'inscrit'], ['inscrit', 'se_désinscrire'], ['se_désinscrire', 'dehors'], ['inscrit', 'choisir_X'], ['places_X', 'choisir_X'], ['ouvert_X', 'choisir_X'], ['choisir_X', 'ouvert_X'], ['choisir_X', 'suit_X'],
+      ['suit_X', 'quitter_X'], ['terminé_X', 'quitter_X'], ['quitter_X', 'terminé_X'], ['quitter_X', 'places_X'], ['quitter_X', 'inscrit', 1, 38],
+      ['ouvert_X', 'démarrer_X'], ['démarrer_X', 'en_cours_X'], ['en_cours_X', 'finir_X'], ['finir_X', 'terminé_X'], ['terminé_X', 'rouvrir_X'], ['rouvrir_X', 'ouvert_X'], ['places_X', 'rouvrir_X', 20], ['rouvrir_X', 'places_X', 20]] });
   D('ex23', { title: 'Exercice 2.3 (figure 1)',
     places: [P('p1', 110, 20, 0, 't'), P('p2', 110, 160, 1), P('p3', 250, 90, 0, 't'), P('p4', 390, 20, 1, 't'), P('p5', 390, 160)], trans: [T('t1', 40, 90, 'l'), T('t2', 180, 90), T('t3', 320, 90), T('t4', 460, 90, 'r')],
     arcs: [['p2', 't1'], ['t1', 'p1'], ['p1', 't2'], ['t2', 'p2'], ['t2', 'p3'], ['p3', 't3'], ['t3', 'p4'], ['p4', 't4'], ['t4', 'p5'], ['p5', 't3']] });
@@ -221,31 +230,15 @@
   D('ex25', { title: 'Exercice 2.5 : l’impression d’étiquettes (figure 3)',
     places: [P('vide', 40, 130, 3), P('libre', 280, 20, 2, 't'), P('en_impression', 280, 130), P('imprimé', 520, 130)], trans: [T('démarre', 160, 130), T('termine', 400, 130)],
     arcs: [['vide', 'démarre'], ['libre', 'démarre'], ['démarre', 'en_impression'], ['en_impression', 'termine'], ['termine', 'libre'], ['termine', 'imprimé']] });
-  // Dépliage de la seule place « libre » (capacité 2) : trois places libre=0, libre=1, libre=2 dont une seule est marquée
-  D('ex25-libre', { title: 'Exercice 2.5 : dépliage de la place libre',
-    places: [P('vide', 40, 150, 3), P('en_impression', 280, 150), P('imprimé', 520, 150), P('libre=2', 280, 10, 1, 't'), P('libre=1', 280, 80, 0, 't'), P('libre=0', 280, 290)],
-    trans: [T('démarre[2]', 150, 80, 'l'), T('démarre[1]', 150, 220, 'l'), T('termine[1]', 410, 80, 'r'), T('termine[0]', 410, 220, 'r')],
-    arcs: [['vide', 'démarre[2]'], ['vide', 'démarre[1]'], ['démarre[2]', 'en_impression'], ['démarre[1]', 'en_impression'], ['en_impression', 'termine[1]'], ['en_impression', 'termine[0]'], ['termine[1]', 'imprimé'], ['termine[0]', 'imprimé'],
-      ['libre=2', 'démarre[2]'], ['démarre[2]', 'libre=1'], ['libre=1', 'démarre[1]'], ['démarre[1]', 'libre=0'], ['libre=0', 'termine[0]'], ['termine[0]', 'libre=1'], ['libre=1', 'termine[1]'], ['termine[1]', 'libre=2']] });
-  // Dépliage : chaque place de capacité k devient k+1 places « nom=j » (une seule marquée : elle dit combien de pions la place contenait) ;
-  // chaque transition est recopiée une fois par combinaison de niveaux possibles.
-  (() => {
-    const cap = { vide: 3, libre: 2, en_impression: 2, imprimé: 3 }, init = { vide: 3, libre: 2, en_impression: 0, imprimé: 0 };
-    const pl = [], tr = [], arcs = [];
-    Object.keys(cap).forEach(p => { for (let j = 0; j <= cap[p]; j++) pl.push({ id: `${p}=${j}`, tokens: init[p] === j ? 1 : 0 }); });
-    const copy = (name, dec, inc) => { // dec : places qui perdent un pion, inc : places qui en gagnent un
-      const all = [...dec, ...inc];
-      const rec = (i, lv) => {
-        if (i === all.length) { const id = `${name}[${all.map(p => lv[p]).join('')}]`; tr.push({ id });
-          dec.forEach(p => { arcs.push([`${p}=${lv[p]}`, id], [id, `${p}=${lv[p] - 1}`]); }); inc.forEach(p => { arcs.push([`${p}=${lv[p]}`, id], [id, `${p}=${lv[p] + 1}`]); }); return; }
-        const p = all[i], isDec = i < dec.length;
-        for (let j = isDec ? 1 : 0; j <= (isDec ? cap[p] : cap[p] - 1); j++) rec(i + 1, { ...lv, [p]: j });
-      };
-      rec(0, {});
-    };
-    copy('démarre', ['vide', 'libre'], ['en_impression']); copy('termine', ['en_impression'], ['libre', 'imprimé']);
-    D('ex25-deplie', { title: 'Exercice 2.5 déplié (toutes les places de capacité 1)', places: pl, trans: tr, arcs });
-  })();
+  // Le corrigé : libre et en_impression (0 à 2 jetons) deviennent chacune trois places de capacité 1 ; vide et imprimé restent ordinaires.
+  // L'indice d'une transition : nombre d'étiquettes en impression avant et après le tir.
+  D('ex25-deplie', { title: 'Exercice 2.5 déplié (corrigé)',
+    places: [P('vide', 300, 0, 3, 't'), P('libre2', 140, 80, 1, 'l'), P('libre1', 300, 80, 0, 't'), P('libre0', 460, 80, 0, 'r'), P('en_impression0', 140, 250, 1, 'l'), P('en_impression1', 300, 250, 0, 'b'), P('en_impression2', 460, 250, 0, 'r'), P('imprimé', 300, 400, 0, 'b')],
+    trans: [T('démarre01', 220, 135, 'l'), T('démarre12', 380, 135, 'r'), T('termine10', 220, 195, 'l'), T('termine21', 380, 195, 'r')],
+    arcs: [['vide', 'démarre01', 1, 30], ['libre2', 'démarre01'], ['en_impression0', 'démarre01'], ['démarre01', 'libre1'], ['démarre01', 'en_impression1'],
+      ['vide', 'démarre12', 1, -30], ['libre1', 'démarre12'], ['en_impression1', 'démarre12'], ['démarre12', 'libre0'], ['démarre12', 'en_impression2'],
+      ['libre1', 'termine10'], ['en_impression1', 'termine10'], ['termine10', 'libre2'], ['termine10', 'en_impression0'], ['termine10', 'imprimé', 1, 40],
+      ['libre0', 'termine21'], ['en_impression2', 'termine21'], ['termine21', 'libre1'], ['termine21', 'en_impression1'], ['termine21', 'imprimé', 1, -40]] });
 
   if (typeof module !== 'undefined' && module.exports) module.exports = PETRI;
 })(typeof window !== 'undefined' ? window : globalThis);
