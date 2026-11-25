@@ -1,10 +1,10 @@
 // Service worker : l'app reste utilisable sans réseau (fiches, cartes, exercices ; le tuteur IA demande Internet).
 // Stratégie : on sert la copie en cache tout de suite et on la met à jour en arrière-plan.
 // Le nom du cache inclut le chemin de l'app pour ne pas se mélanger avec les apps de langues (même adresse).
-const VERSION = 'v20261119-1';
+const VERSION = 'v20261125-securite';
 const CACHE = 'applangues' + self.location.pathname.replace(/sw\.js$/, '') + VERSION;
 const SHELL = [
-  './', './index.html', './css/style.css', './css/theme.css', './css/vivid.css', './css/nova.css', './css/pm.css', './manifest.webmanifest',
+  './', './index.html', './css/style.css', './css/theme.css', './css/vivid.css', './css/nova.css', './css/pm.css', './manifest.webmanifest', './js/boot.js',
   './fonts/jost-latin.woff2', './fonts/jost-latin-italic.woff2',
   './img/petri.svg', './img/markov.svg', './img/accessibilite.svg', './img/carte.svg', './img/journal.svg', './img/jetons.svg', './img/matrice.svg', './img/routage.svg',
   './icons/favicon.svg', './icons/favicon-32.png', './icons/icon-192.png',
